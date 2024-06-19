@@ -1,1 +1,3 @@
-# ASP_ChatApp_1820
+# Final Team Project
+# used C#
+# ASP.NET Core MVC

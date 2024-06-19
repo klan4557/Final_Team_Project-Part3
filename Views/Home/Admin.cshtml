@@ -1,0 +1,31 @@
+﻿@{
+    ViewData["Title"] = "Admin";
+}
+
+<div class="container">
+    <h1 class="mb-5">Choose Chat Rooms</h1>
+    <div class="d-flex justify-content-center align-items-center flex-column">
+        <button type="button" class="btn btn-primary btn-lg mb-5" onclick="joinRoom('Room1')">Room 1</button>
+        <button type="button" class="btn btn-primary btn-lg mb-5" onclick="joinRoom('Room2')">Room 2</button>
+        <button type="button" class="btn btn-primary btn-lg mb-5" onclick="joinRoom('Room3')">Room 3</button>
+        <button type="button" class="btn btn-primary btn-lg mb-5" onclick="joinRoom('Room4')">Room 4</button>
+        <button type="button" class="btn btn-primary btn-lg mb-5" onclick="joinRoom('Room5')">Room 5</button>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        function joinRoom(room) {
+            fetch(`/Home/AdminChat?room=${room}`)
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        window.location.href = data.url;
+                    } else {
+                        alert(data.message);
+                    }
+                })
+                .catch(error => console.error('Error:', error));
+        }
+    </script>
+}

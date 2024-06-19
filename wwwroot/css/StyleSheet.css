@@ -1,0 +1,152 @@
+﻿html {
+    font-size: 14px;
+    position: relative;
+    min-height: 100%;
+    font-family: 'Poppins', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; /* 동글동글한 느낌의 폰트 설정 */
+}
+
+@media (min-width: 768px) {
+    html {
+        font-size: 16px;
+    }
+}
+
+body {
+    margin-bottom: 60px;
+    background-color: #ffffff; /* 하얀색 배경 */
+    color: #000000; /* 검은색 텍스트 */
+    font-family: 'Poppins', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.navbar {
+    background-color: #ffffff; /* 하얀색 배경 */
+    border-bottom: 1px solid #dddddd;
+}
+
+.navbar-brand,
+.nav-link {
+    color: #000000 !important; /* 검은색 텍스트 */
+}
+
+.nav-link {
+    font-size: 1.2rem; /* 텍스트가 잘 보이도록 폰트 크기 조정 */
+}
+
+.btn-primary {
+    background-color: #007bff;
+    border-color: #007bff;
+    color: #ffffff;
+}
+
+#messagesContainer {
+    display: flex;
+    flex-direction: column;
+    height: 65vh; /* 고정된 높이 */
+    background-color: #e0f7fa; /* 연한 하늘색 */
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    margin-bottom: 10px;
+    padding: 10px; /* 여백 추가 */
+}
+
+.message {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 10px;
+    max-width: 70%;
+    word-wrap: break-word; /* 말풍선이 텍스트 길이에 맞게 변하도록 설정 */
+}
+
+    .message.my-message {
+        align-self: flex-end;
+        background-color: #d1ecf1; /* 연한 파란색 */
+        color: black;
+        font-weight: bold;
+        border-radius: 15px;
+        padding: 10px;
+        text-align: right; /* 텍스트를 오른쪽 정렬 */
+        margin-left: auto; /* 내 메시지는 오른쪽에 정렬 */
+        width: fit-content; /* 텍스트 길이에 맞게 말풍선의 크기 조정 */
+    }
+
+    .message.other-message {
+        align-self: flex-start;
+        background-color: #f8d7da; /* 연한 분홍색 */
+        color: black;
+        font-weight: bold; /* 상대방 텍스트도 BOLD 처리 */
+        border-radius: 15px;
+        padding: 10px;
+        text-align: left; /* 텍스트를 왼쪽 정렬 */
+        margin-right: auto; /* 다른 사람의 메시지는 왼쪽에 정렬 */
+        width: fit-content; /* 텍스트 길이에 맞게 말풍선의 크기 조정 */
+    }
+
+    .message .message-user {
+        font-size: 0.8rem;
+        font-weight: bold;
+        color: #555; /* 밝은 회색 */
+        margin-bottom: 5px;
+    }
+
+    .message.my-message .message-user {
+        align-self: flex-end;
+    }
+
+    .message.other-message .message-user {
+        align-self: flex-start;
+    }
+
+    .message .message-bubble {
+        font-size: 1rem;
+        word-wrap: break-word;
+        width: auto;
+        max-width: 100%; /* 화면 너비를 넘지 않도록 설정 */
+    }
+
+.input-group {
+    padding: 15px;
+    background-color: #f8f9fa;
+    border-radius: 8px;
+}
+
+.container {
+    background-color: #ffffff; /* 하얀색 배경 */
+    color: #000000; /* 검은색 텍스트 */
+}
+
+.jumbotron {
+    padding-top: 3rem; /* 추가적인 여백 */
+    padding-bottom: 3rem; /* 추가적인 여백 */
+    background-color: #ffffff; /* 하얀색 배경 */
+    border-radius: .3rem;
+}
+
+    .jumbotron h1 {
+        margin-bottom: 2.5rem; /* 텍스트 사이의 공백 추가 */
+    }
+
+    .jumbotron p {
+        margin-bottom: 2.5rem; /* 텍스트 사이의 공백 추가 */
+    }
+
+    .jumbotron form {
+        margin-top: 2.5rem; /* 추가적인 여백 */
+    }
+
+.room-link {
+    display: block;
+    margin-bottom: 3rem; /* 링크 간의 간격 넓힘 */
+    text-align: center;
+    padding: 15px 30px;
+    background-color: #007bff;
+    color: #ffffff;
+    border-radius: 8px;
+    text-decoration: none;
+    font-size: 1.25rem;
+}
+
+    .room-link:hover {
+        background-color: #0056b3;
+        color: #ffffff;
+        text-decoration: none;
+    }

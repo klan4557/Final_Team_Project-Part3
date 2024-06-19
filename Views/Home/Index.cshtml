@@ -1,0 +1,12 @@
+﻿@{
+    ViewData["Title"] = "Home Page";
+}
+
+<div class="jumbotron text-center" style="color: black; max-width: 800px; margin: auto; background-color: white;">
+    <h1 class="display-4">M.I.S.S 채팅 문의 서비스입니다</h1>
+    <p class="lead">채팅을 원하시면 버튼을 눌러주세요!</p>
+    <hr class="my-4" style="border-color: #000000;">
+    <form asp-action="GoChat" method="post">
+        <button type="submit" class="btn btn-primary btn-lg" role="button">Go Chat</button>
+    </form>
+</div>

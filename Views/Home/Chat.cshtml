@@ -1,0 +1,110 @@
+﻿@{
+    ViewData["Title"] = "Chat";
+    string roomName = ViewBag.Room;
+    List<string> chatLogs = ViewBag.ChatLogs;
+    bool isAdmin = ViewBag.IsAdmin;
+    string userName = isAdmin ? "Admin" : roomName.StartsWith("Room") ? "User" + roomName.Substring(4) : "User";
+}
+
+<div class="container" style="max-width: 800px;">
+    <div id="chatContainer" class="flex-column vh-100">
+        <div id="messagesContainer" class="flex-grow-1 overflow-auto p-3">
+            <ul id="messagesList" class="list-unstyled">
+                @foreach (var log in chatLogs)
+                {
+                    var parts = log.Split(':');
+                    var user = parts[0];
+                    var message = string.Join(":", parts.Skip(1));
+
+                    <li class="message @(user == userName ? "my-message" : "other-message")">
+                        <div class="message-user">@user</div>
+                        <div class="message-bubble">@message</div>
+                    </li>
+                }
+            </ul>
+        </div>
+        <div class="input-group p-3 bg-light">
+            <input type="text" id="messageInput" class="form-control" placeholder="Enter your message" onkeydown="if (event.key === 'Enter') sendMessage()" />
+            <button class="btn btn-primary" type="button" onclick="sendMessage()">Send</button>
+        </div>
+        <button class="btn btn-danger mt-3" type="button" onclick="leaveChat()">Leave Chat</button>
+    </div>
+</div>
+
+@section Scripts {
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/microsoft-signalr/5.0.11/signalr.min.js"></script>
+    <script>
+        let userName = '@userName';
+        const roomName = '@roomName';
+        const isAdmin = '@isAdmin'.toLowerCase() === 'true';
+        const connection = new signalR.HubConnectionBuilder()
+            .withUrl("/chathub")
+            .build();
+
+        connection.on("ReceiveMessage", (user, message) => {
+            const messageElement = document.createElement("li");
+            messageElement.classList.add("message", user === userName ? "my-message" : "other-message");
+
+            const userElement = document.createElement("div");
+            userElement.classList.add("message-user");
+            userElement.textContent = user;
+
+            const messageBubble = document.createElement("div");
+            messageBubble.classList.add("message-bubble");
+            messageBubble.textContent = message;
+
+            messageElement.appendChild(userElement);
+            messageElement.appendChild(messageBubble);
+
+            document.getElementById("messagesList").appendChild(messageElement);
+            document.getElementById("messagesContainer").scrollTop = document.getElementById("messagesContainer").scrollHeight;
+        });
+
+        connection.start().then(() => {
+            connection.invoke("JoinRoom", roomName);
+        }).catch(err => console.error(err.toString()));
+
+        function sendMessage() {
+            const message = document.getElementById("messageInput").value;
+            connection.invoke("SendMessage", roomName, userName, message).catch(err => console.error(err.toString()));
+            document.getElementById("messageInput").value = '';
+
+            fetch('/Home/SaveMessage', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ room: roomName, user: userName, message: message })
+            });
+        }
+
+        function leaveChat() {
+            connection.invoke("LeaveRoom", roomName, userName).then(() => {
+                if (userName.startsWith("User")) {
+                    fetch('/Home/SaveMessage', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify({ room: roomName, user: userName, message: `${userName}가 채팅을 종료했습니다.` })
+                    });
+                    window.location.href = '/Home/EndPage';
+                } else {
+                    connection.invoke("EndChat", roomName).then(() => {
+                        fetch('/Home/EndChat', {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json'
+                            },
+                            body: JSON.stringify({ room: roomName })
+                        }).then(() => window.location.href = "/Home/Admin");
+                    });
+                }
+            });
+        }
+
+        window.addEventListener('beforeunload', function (e) {
+            leaveChat();
+        });
+    </script>
+}
